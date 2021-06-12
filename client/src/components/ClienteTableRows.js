@@ -8,9 +8,13 @@ function ClienteTableRows({ cliente, index }){
             <td>{cliente.email}</td>
             <td>{cliente.telefono}</td>
             <td>{cliente.direcciones.join(", ")}</td>
-            <td>
-                <span className="btn btn-secondary mr-2">Editar</span>
-                <span className="btn btn-danger" onClick={()=>deleteCliente(cliente.id )}>Eliminar</span>
+            <td className="text-center">
+                <span className="btn btn-secondary mr-2">
+                    Editar
+                </span>
+                <span className="btn btn-danger mt-1" onClick={()=>deleteCliente(cliente.id )}>
+                    Eliminar
+                </span>
             </td>
         </tr>
     )

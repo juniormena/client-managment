@@ -11,7 +11,7 @@ function NavbarComponent(){
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Nav className="me-auto">
                     <Link className="nav-link" to="crear-cliente">Crear Cliente</Link>
-                    <Link className="nav-link" to="/listado-clientes">Listado de cliente</Link>
+                    <Link className="nav-link" to="/listado-clientes">Listado de clientes</Link>
                 </Nav>
             </Container>
         </Navbar>
