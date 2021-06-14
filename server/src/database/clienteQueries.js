@@ -13,12 +13,19 @@ const clienteQueries = {
 
         one:'SELECT * FROM client.tb_cliente WHERE id = $1 AND estado = 1',
 
-        byEmail:'SELECT id FROM client.tb_cliente WHERE email = $1'
+        byEmail:'SELECT id FROM client.tb_cliente WHERE email = $1',
+
+        directionsById:'SELECT id, direccion from client.tb_direcciones WHERE cliente_id = $1'
     },
     insertCliente:`INSERT INTO client.tb_cliente(nombre, apellido, email, sexo, telefono)
     VALUES ($1, $2, $3, $4, $5);`,
 
+    updateCliente:`UPDATE client.tb_cliente
+	SET nombre=$2, apellido=$3, sexo=$4, telefono=$5, modificado=$6
+	WHERE id = $1`,
+
     deleteCliente:`DELETE FROM client.tb_cliente WHERE id = $1;`,
+    deleteDirecciones:`DELETE FROM client.tb_direcciones WHERE cliente_id = $1;`,
 
     insertDirecciones:`INSERT INTO client.tb_direcciones(direccion, cliente_id) VALUES ($1, $2);`
 }

@@ -23,7 +23,7 @@ async function getClienteByEmail(email) {
 
 module.exports = {
 
-    async addCliente(request,response){
+    async addCliente(request, response){
         try{
             let { nombre, apellido, email, sexo, telefono, direcciones  } = request.body;
             let clienteExist = await getClienteByEmail(email.trim());
@@ -61,12 +61,43 @@ module.exports = {
             });    
         }
         catch (err){
-            console.log(err)
             genericResponse(response);
         }
     },
 
-    async getClientes(request,response){
+    async updateCliente(request, response){
+        try{
+            const { id } = request.params;
+            let { nombre, apellido, sexo, telefono, direcciones  } = request.body;
+
+            if(direcciones?.length===0){
+                return response.status(200).json({
+                    success:false,
+                    message:'Cliente debe tener al menos una direccion'
+                });
+            }
+
+            let clientUpdated = await connectToDatabase(clienteQueries.updateCliente, [id, nombre, apellido, sexo, telefono, new Date()]);
+
+            if(clientUpdated.rowCount > 0){
+                connectToDatabase(clienteQueries.deleteDirecciones, [id]);
+                direcciones.forEach(dir=>connectToDatabase(clienteQueries.insertDirecciones, [dir, id]));
+             }
+
+             return response.status(201).json({
+                success:clientUpdated.rowCount > 0 ? true : false,
+                message:clientUpdated.rowCount > 0 ? 
+                `Cliente ${nombre} actualizado exitosamente` 
+                :`Cliente ${nombre} no pudo ser actualizado`,
+            });    
+        }
+        catch(error){
+            console.log(error)
+            genericResponse(response);
+        }
+    },
+
+    async getClientes(request, response){
         try{
             let data = await connectToDatabase(clienteQueries.select.all);
             
@@ -81,7 +112,7 @@ module.exports = {
         }
     },
 
-    async getClienteById(request,response){
+    async getClienteById(request, response){
         const { id }=request.params;
 
         try{
@@ -98,7 +129,7 @@ module.exports = {
         }
     },
 
-    async deleteCliente(request,response){ 
+    async deleteCliente(request, response){ 
         try{
             const { id } = request.params;
 
@@ -113,6 +144,22 @@ module.exports = {
             genericResponse(response);
         }
     },
+
+    async getDireccionesById(request, response){
+        try{
+            const { id } = request.params;
+
+            let data = await connectToDatabase(clienteQueries.select.directionsById, [id]); 
+            
+            return response.status(200).json({
+                success:data.rowCount > 0 ? true : false,
+                data:data.rowCount > 0 ? data.rows : [],
+            });  
+        }
+        catch{
+            genericResponse(response);
+        }
+    }
 
     
 }

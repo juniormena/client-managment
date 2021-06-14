@@ -57,7 +57,9 @@ export async function addCliente(event, data, setLoading){
 }
 
 export async function deleteCliente(id){
-    const response  = await fetch(baseUrl + `/deleteCliente/${id}`);
+    const response  = await fetch(baseUrl + `/deleteCliente/${id}`,{
+        method:'DELETE'
+    });
     if(response.ok){
         const jsonResponse = await response.json();
         if(jsonResponse.success){
