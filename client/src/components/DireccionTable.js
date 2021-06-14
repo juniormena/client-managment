@@ -1,6 +1,6 @@
 import {Table} from "react-bootstrap";
 
-function DireccionTable({ direcciones, setDirecciones }){
+function DireccionTable({ direcciones, setDirecciones, editarDireccion, direccion:dir }){
 
     function removeDireccion(direccion){
         let newDirecciones = direcciones.filter(dir=>dir.id!==direccion.id);
@@ -21,8 +21,10 @@ function DireccionTable({ direcciones, setDirecciones }){
                 <td>{index+1}</td>
                 <td>{direccion.direccion}</td>
                 <td>
-                    <span className="btn btn-secondary mr-2">Editar</span>
-                    <span className="btn btn-danger" onClick={()=>removeDireccion(direccion)}>Eliminar</span>
+                    <span className="btn btn-secondary mr-2" onClick={()=>editarDireccion(direccion) }>Editar</span>
+                    {dir.id===0 && <span className="btn btn-danger" onClick={()=>removeDireccion(direccion)}>
+                        Eliminar
+                    </span>}
                 </td>
             </tr>)}
             </tbody>

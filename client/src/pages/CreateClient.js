@@ -7,14 +7,31 @@ import {addCliente} from "../services/clienteServices";
 import Spinner from "../components/Spinner";
 
 function CreateClient(){
-    const [cliente, setCliente] = useState({nombre:"", apellido:"",email:"",sexo:"",telefono:"", direccion:""});
+    const [cliente, setCliente] = useState({nombre:"", apellido:"",email:"",sexo:"",telefono:""});
+    const [direccion, setDireccion] = useState({id:0, value:""})
     const [direcciones,setDirecciones] = useState([]);
     const [loading, setLoading] = useState(false);
 
     function agregarDireccion(direccion){
-        setDirecciones(prevDirecciones=>([...prevDirecciones, {id:generateUniqueID(), direccion}]));
-        setCliente(prevState => ({...prevState, direccion: ""}));
+        if(direccion.id!==0){
+            let direccionesCopied = [...direcciones];
+            let direccionIndex = direccionesCopied.findIndex(dir=>dir.id===direccion.id);
+            direccionesCopied[direccionIndex].direccion = direccion.value;
+            setDirecciones(direccionesCopied);
+        }
+        else{
+            setDirecciones(prevDirecciones=>([...prevDirecciones, {id:generateUniqueID(), direccion:direccion.value}]));
+        }
+        setDireccion({id:0, value: ""});
     }
+
+    function editarDireccion(direccion){
+        setDireccion({id:direccion.id, value: direccion.direccion});
+    }
+
+    console.log(direcciones);
+    console.log(cliente);
+
     return(
         <Card className="mt-3">
             <Card.Header>Crear cliente</Card.Header>
@@ -78,24 +95,24 @@ function CreateClient(){
                                             <Card.Body>
                                                 <label>Direccion </label>
                                                 <div className="input-group mb-3">
-                                                    <input type="text" className="form-control" value={cliente.direccion}
-                                                           onChange={(e)=>handleChangeInput(e,'direccion',cliente,setCliente)}/>
+                                                    <input type="text" className="form-control" value={direccion.value}
+                                                           onChange={(e)=>handleChangeInput(e,'value',direccion,setDireccion)}/>
                                                     <div className="input-group-append">
                                                         <button className="btn btn-outline-secondary"
-                                                                type="button" onClick={()=>agregarDireccion(cliente.direccion)}>
-                                                            Agregar
+                                                                type="button" onClick={()=>agregarDireccion(direccion)}>
+                                                            {direccion.id===0 ? 'Agregar' : 'Editar'}
                                                         </button>
                                                     </div>
                                                 </div>
                                             </Card.Body>
                                         </Accordion.Collapse>
                                         { direcciones.length>0 &&  <DireccionTable direcciones={direcciones}
-                                         setDirecciones={setDirecciones}/>}
+                                         setDirecciones={setDirecciones} editarDireccion={editarDireccion} direccion={direccion}/>}
                                     </Card>
                                 </Accordion>
                             </Col>
                         </Row>
-                        <button className="btn btn-primary text-uppercase float-right mt-4">
+                        <button className="btn btn-primary text-uppercase float-right mt-4" disabled={direccion.id!==0}>
                             {loading ? <Spinner/> : "Guardar"}
                         </button>
                     </form>
