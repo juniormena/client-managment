@@ -3,7 +3,7 @@ import Spinner from "../components/Spinner";
 import ClientesTable from "../components/ClientesTable";
 
 function ListadoClientes(){
-    const { data:clientes, error, loading } = useFetch("/getClientes");
+    const { data:clientes, loading } = useFetch("/getClientes");
 
     if(loading){
         return <Spinner/>

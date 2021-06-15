@@ -9,7 +9,7 @@ function Home(){
                 <p className="lead">
                     <a className="btn btn-primary btn-lg"
                        href="https://github.com/juniormena/client-managment"
-                       role="button" target="_blank" referrerPolicy="no-referrer">
+                       role="button" target="_blank" rel="noreferrer">
                         Click aqui para ir al repositorio en github
                     </a>
                 </p>

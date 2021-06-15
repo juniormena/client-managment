@@ -13,14 +13,8 @@ export function handleChangeInput(e, name, state, setState) {
     setState({ ...state, [name]: value });
 }
 
-function generate_UUID(){
-    let dt = new Date().getTime();
-    let uuid = 'xxx-4xx-yxxx'.replace(/[xy]/g, function(c) {
-        let r = (dt + Math.random()*16)%16 | 0;
-        dt = Math.floor(dt/16);
-        return (c==='x' ? r :(r&0x3|0x8)).toString(16);
-    });
-    return uuid;
+export function generateUniqueID () {
+    return `v1-${Date.now()}-${Math.floor(Math.random() * (9e12 - 1)) + 1e12}`;
 }
 
 export function notificationError(datos, close) {

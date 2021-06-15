@@ -1,7 +1,6 @@
 import {Accordion, Card, Col, Container, Row} from "react-bootstrap";
-import {handleChangeInput, sexos} from "../helpers";
+import {generateUniqueID, handleChangeInput, sexos} from "../helpers";
 import {useState} from "react";
-import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
 import DireccionTable from "../components/DireccionTable";
 import {addCliente} from "../services/clienteServices";
 import Spinner from "../components/Spinner";
